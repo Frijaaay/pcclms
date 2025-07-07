@@ -1,10 +1,10 @@
 <template>
 
-<!-- Total Users -->
+<!-- Total Librarians -->
 <div class="card bg-base-100 text-base-content w-full shadow-sm border border-base-300 p-4">
   <div class="flex items-start justify-between">
     <div>
-      <p class="text-sm text-base-content/80">Total Users</p>
+      <p class="text-sm text-base-content/80">Total Librarians</p>
       <div class="flex items-center space-x-2 mt-1">
         <p class="text-2xl font-bold text-base-content">100</p>
         <span class="badge badge-success badge-sm gap-1">
@@ -20,10 +20,38 @@
     </div>
   </div>
   <p class="text-xs text-base-content/60 mt-2">
-    vs. 
+    vs.
     <span class="font-medium text-base-content">
       90
-    </span> 
+    </span>
+    last period
+  </p>
+</div>
+
+<!-- Total Borrowers -->
+<div class="card bg-base-100 text-base-content w-full shadow-sm border border-base-300 p-4">
+  <div class="flex items-start justify-between">
+    <div>
+      <p class="text-sm text-base-content/80">Total Borrowers</p>
+      <div class="flex items-center space-x-2 mt-1">
+        <p class="text-2xl font-bold text-base-content">100</p>
+        <span class="badge badge-success badge-sm gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+          10%
+        </span>
+      </div>
+    </div>
+    <div class="btn btn-sm btn-circle btn-ghost">
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-7" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M14 9h4m-4 3.5h3"/><rect width="20" height="18" x="2" y="3" rx="5"/><path d="M5 16c1.208-2.581 5.712-2.75 7 0m-1.5-7a2 2 0 1 1-4 0a2 2 0 0 1 4 0"/></g></svg>
+    </div>
+  </div>
+  <p class="text-xs text-base-content/60 mt-2">
+    vs.
+    <span class="font-medium text-base-content">
+      90
+    </span>
     last period
   </p>
 </div>
@@ -48,10 +76,10 @@
     </div>
   </div>
   <p class="text-xs text-base-content/60 mt-2">
-    vs. 
+    vs.
     <span class="font-medium text-base-content">
       90
-    </span> 
+    </span>
     last period
   </p>
 </div>
@@ -76,10 +104,10 @@
     </div>
   </div>
   <p class="text-xs text-base-content/60 mt-2">
-    vs. 
+    vs.
     <span class="font-medium text-base-content">
       90
-    </span> 
+    </span>
     last period
   </p>
 </div>
@@ -104,10 +132,10 @@
     </div>
   </div>
   <p class="text-xs text-base-content/60 mt-2">
-    vs. 
+    vs.
     <span class="font-medium text-base-content">
       90
-    </span> 
+    </span>
     last period
   </p>
 </div>

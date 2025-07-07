@@ -101,9 +101,9 @@ watch(() => isCollapsed.value, (collapsed) => {
         leave-from-class="max-h-40 opacity-100 overflow-hidden"
         leave-to-class="max-h-0 opacity-0 overflow-hidden"
         >
-        <ul v-if="toggleLink3 && isSidebarVisuallyExtended" class="space-y-1 text-sm pl-12 mb-2">
-          <li class="flex items-center justify-between gap-0.5"><RouterLink :to="{ name: 'manage-books'}" :class="isActiveLink('/admin/books') ? 'font-semibold text-accent' : 'hover:text-accent'">Manage Books</RouterLink></li>
-          <li class="flex items-center justify-between gap-0.5"><RouterLink :to="{ name: 'file-book-replacement'}" :class="isActiveLink('/admin/books/replacement') ? 'font-semibold text-accent' : 'hover:text-accent'">File Book Replacement</RouterLink></li>
+        <ul v-if="toggleLink3 && isSidebarVisuallyExtended" class="space-y-1 text-sm text-nowrap pl-12 mb-2 transition">
+          <li class="flex items-center gap-0.5"><RouterLink :to="{ name: 'manage-books'}" :class="isActiveLink('/admin/books') ? 'font-semibold text-accent' : 'hover:text-accent'">Manage Books</RouterLink></li>
+          <li class="flex items-center gap-0.5"><RouterLink :to="{ name: 'file-book-replacement'}" :class="isActiveLink('/admin/books/replacement') ? 'font-semibold text-accent' : 'hover:text-accent'">File Book Replacement</RouterLink></li>
         </ul>
         </transition>
       </div>

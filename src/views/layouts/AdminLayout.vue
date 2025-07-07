@@ -40,7 +40,7 @@ const currentPage = computed(() => {
 
   <!-- Main Content (below header) -->
   <section class="relative flex pt-[60px] h-screen bg-base-200 shadow-inner">
-    
+
     <!-- Left Sidebar (fixed) -->
         <div class="h-full fixed top-[60px] left-0 z-20 bg-base-100 text-base-content border-r transition-all duration-300" :style="{ width: `${sidebarWidth}px` }">
                 <Sidebar @update:width="sidebarWidth = $event" />
@@ -52,7 +52,7 @@ const currentPage = computed(() => {
         :class="{ 'mr-[300px]': hasRightSidebar }"
         :style="{ marginLeft: `${sidebarWidth}px` }"
         >
-      
+
       <!-- Breadcrumb or Sub-header -->
       <div class="pl-4 pt-2 text-sm font-semibold text-base-content shrink-0">
         <Breadcrumb>
