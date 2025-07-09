@@ -1,5 +1,6 @@
 import './assets/main.css';
 import 'primeicons/primeicons.css';
+import 'cally';
 
 import router from './router';
 import { createApp } from 'vue';

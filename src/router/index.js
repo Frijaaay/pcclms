@@ -7,7 +7,7 @@ import TestView from '/TestView.vue';
 import ManageLibrarianView from '@/views/admin/ManageLibrarianView.vue';
 import ManageBorrowerView from '@/views/admin/ManageBorrowerView.vue';
 import ManageBookView from '@/views/admin/ManageBookView.vue';
-import BookReplacementView from '@/views/admin/BookReplacementView.vue';
+import BorrowBook from '@/views/admin/BorrowBookView.vue';
 import BorrowedBooksView from '@/views/admin/BorrowedBooksView.vue';
 import ReturnedBooksView from '@/views/admin/ReturnedBooksView.vue';
 import ReportsView from '@/views/admin/ReportsView.vue';
@@ -49,10 +49,10 @@ const router = createRouter({
                     meta: { parentPage: 'Book Management' }
                 },
                 {
-                    path: "/admin/books/replacement",
-                    name: "file-book-replacement",
-                    component: BookReplacementView,
-                    meta: { parentPage: 'Book Management', currentPage: 'File Book Replacement' }
+                    path: "/admin/books/borrow",
+                    name: "borrow-book",
+                    component: BorrowBook,
+                    meta: { parentPage: 'Book Management', currentPage: 'Borrow Book' }
                 },
                 {
                     path: "/admin/transactions/borrowed",
