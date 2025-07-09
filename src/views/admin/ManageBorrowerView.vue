@@ -21,7 +21,7 @@ import Button from '@/components/Button.vue';
                     </Button>
                     <Button>
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1c0 .6-.4 1-1 1H5a1 1 0 0 1-1-1m8-10a3 3 0 1 1-6 0a3 3 0 0 1 6 0"/></svg>
-                        Add Librarian
+                        Add Borrower
                     </Button>
                 </div>
             </div>

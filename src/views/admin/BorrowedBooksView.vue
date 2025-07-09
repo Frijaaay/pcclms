@@ -22,27 +22,26 @@ import DatePicker from '@/components/DatePicker.vue';
             Filter
           </Button>
           <Button>
-            <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1c0 .6-.4 1-1 1H5a1 1 0 0 1-1-1m8-10a3 3 0 1 1-6 0a3 3 0 0 1 6 0"/></svg>
-            Add Book
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 512 512"><path fill="currentColor" d="M420 128.1V16H92v112.1A80.1 80.1 0 0 0 16 208v192h68v-32H48V208a48.054 48.054 0 0 1 48-48h320a48.054 48.054 0 0 1 48 48v160h-44v32h76V208a80.1 80.1 0 0 0-76-79.9Zm-32-.1H124V48h264Z"/><path fill="currentColor" d="M396 200h32v32h-32zm-280 64H76v32h40v200h272V296h40v-32H116Zm240 200H148V296h208Z"/></svg>
+            Print
           </Button>
         </div>
       </div>
       <!-- Table Container -->
       <div class="overflow-x-auto overflow-y-scroll h-130d rounded-lg">
-        <table class="table table-zebra table-xs table-pin-rows">
+        <table class="table table-zebra table-sm table-pin-rows">
         <!-- Table Head -->
         <thead class="table-pin-rows">
           <tr class="bg-base-200 text-center">
+            <th>Transaction No.</th>
             <th>Book ID</th>
             <th>Title</th>
             <th>Borrower</th>
             <th>Person In Charge</th>
             <th>Date Borrowed</th>
-            <th>Date Returned</th>
             <th>Due Date</th>
             <th>Condition</th>
             <th>Penalty</th>
-            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -50,6 +49,7 @@ import DatePicker from '@/components/DatePicker.vue';
         <tbody>
           <!-- row 1 -->
           <tr v-for="i in 20" :key="i" class="text-center">
+          <td>{{ Math.floor(10000000 + Math.random() * 90000000) }}</td>
           <td>
             {{ i * 10 ^ 100 / 5 }}
           </td>
@@ -79,20 +79,9 @@ import DatePicker from '@/components/DatePicker.vue';
             }}
           </td>
           <td>
-            {{
-              (() => {
-                const start = new Date(2020, 0, 1).getTime();
-                const end = Date.now();
-                const randomDate = new Date(start + Math.random() * (end - start));
-                return randomDate.toLocaleDateString();
-              })()
-            }}
-          </td>
-          <td>
             <span class="badge badge-success badge-soft badge-sm">{{ ['Good', 'Damaged', 'Lost'][Math.floor(Math.random() * 3)] }}</span>
           </td>
           <td>Available</td>
-          <td>{{  ['Borrowed', 'Returned'] [Math.floor(Math.random() * 2)] }}</td>
           <th>
             <div class="dropdown dropdown-end">
             <div role="button" class="btn btn-ghost btn-xs" tabindex="0">
