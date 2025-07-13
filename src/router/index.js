@@ -11,6 +11,7 @@ import BorrowBook from '@/views/admin/BorrowBookView.vue';
 import BorrowedBooksView from '@/views/admin/BorrowedBooksView.vue';
 import ReturnedBooksView from '@/views/admin/ReturnedBooksView.vue';
 import ReportsView from '@/views/admin/ReportsView.vue';
+import { useAuthStore } from "@/stores/AuthStore";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,56 +22,86 @@ const router = createRouter({
             component: AdminLayout,
             children: [
                 {
+                    path: '',
+                    redirect: 'admin/dashboard'
+                },
+                {
                     path: 'dashboard',
                     name: 'admin-dashboard',
                     component: AdminDashboard,
-                    meta: { parentPage: 'Dashboard'}
-                },
-                {
-                    path: '',
-                    redirect: 'admin/dashboard'
+                    meta: { 
+                        parentPage: 'Dashboard',
+                        requiresAuth: true,
+                    }
                 },
                 {
                     path: "/admin/users/librarian",
                     name : "manage-librarian",
                     component: ManageLibrarianView,
-                    meta: { parentPage: 'User Management', currentPage: 'Librarians' }
+                    meta: { 
+                        parentPage: 'User Management', 
+                        currentPage: 'Librarians',
+                        requiresAuth: true,
+                    }
                 },
                 {
                     path: "/admin/users/borrower",
                     name : "manage-borrower",
                     component: ManageBorrowerView,
-                    meta: { parentPage: 'User Management', currentPage: 'Borrowers' }
+                    meta: { 
+                        parentPage: 'User Management', 
+                        currentPage: 'Borrowers',
+                        requiresAuth: true,
+                    }
                 },
                 {
                     path: "/admin/books",
                     name: "manage-books",
                     component: ManageBookView,
-                    meta: { parentPage: 'Book Management' }
+                    meta: { 
+                        parentPage: 'Book Management',
+                        requiresAuth: true 
+                    }
                 },
                 {
                     path: "/admin/books/borrow",
                     name: "borrow-book",
                     component: BorrowBook,
-                    meta: { parentPage: 'Book Management', currentPage: 'Borrow Book' }
+                    meta: { 
+                        parentPage: 'Book Management',
+                        currentPage: 'Borrow Book',
+                        requiresAuth: true 
+                    }
                 },
                 {
                     path: "/admin/transactions/borrowed",
                     name: "borrowed-books",
                     component: BorrowedBooksView,
-                    meta: { parentPage: 'Transactions', currentPage: 'Borrowed Books'}
+                    meta: { 
+                        parentPage: 'Transactions', 
+                        currentPage: 'Borrowed Books',
+                        requiresAuth: true,
+                    }
                 },
                 {
                     path: "/admin/transactions/returned",
                     name: "returned-books",
                     component: ReturnedBooksView,
-                    meta: { parentPage: 'Transactions', currentPage: 'Returned Books'}
+                    meta: { 
+                        parentPage: 'Transactions',
+                        currentPage: 'Returned Books',
+                        requiresAuth: true,
+                    }
                 },
                 {
                     path: "/admin/transactions/reports",
                     name: "transaction-reports",
                     component: ReportsView,
-                    meta: { parentPage: 'Transactions', currentPage: 'Reports'}
+                    meta: { 
+                        parentPage: 'Transactions',
+                        currentPage: 'Reports',
+                        requiresAuth: true,
+                    }
                 }
 
             ]
@@ -78,7 +109,8 @@ const router = createRouter({
         {
             path: "/login",
             name: "login",
-            component: LoginView
+            component: LoginView,
+            meta: { isNotAuthenticated: true }
         },
         {
             path: "/test",
@@ -88,7 +120,7 @@ const router = createRouter({
         {
             path: "/",
             name: "landing",
-            redirect: "/login"
+            redirect: "/admin"
         },
         {
             path: '/:pathMatch(.*)*',
@@ -98,4 +130,21 @@ const router = createRouter({
     ]
 });
 
+// Navigation guard to check for authentication
+router.beforeEach((to, from, next) => {
+    const auth = useAuthStore();
+
+    // If route requiresAuth and no valid token, redirects to login
+    if (to.meta.requiresAuth && !auth.token) {
+        console.log('User is not authenticated, redirecting to login');
+        return next({ name: 'login' });
+    }
+
+    // If route is login and user is already authenticated, redirect to dashboard
+    if (to.meta.isNotAuthenticated && auth.token) {
+        console.log('User is already authenticated, redirecting to dashboard');
+        return next({ name: 'admin-dashboard' });
+    }
+    return next();
+})
 export default router;

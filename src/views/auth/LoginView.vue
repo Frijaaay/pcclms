@@ -1,5 +1,18 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/AuthStore';
+import { ref } from 'vue';
+
+const router = useRouter();
+
+const auth = useAuthStore();
+const id_number = ref('');
+const password = ref('');
+
+const handleLogin = () => {
+    // e.preventDefault();
+    auth.login(id_number.value, password.value, router)
+}
 </script>
 
 <template>
@@ -12,12 +25,12 @@ import { RouterLink } from 'vue-router';
             />
             <span class="text-2xl font-semibold text-base-content">Sign In</span>
 
-            <form class="mt-4 w-full">
+            <form @submit.prevent="handleLogin" class="mt-4 w-full">
                 <fieldset class="fieldset text-">
-                    <legend class="fieldset-legend">Email</legend>
-                    <input type="email" class="input" placeholder="Email" />
+                    <legend class="fieldset-legend">ID Number</legend>
+                    <input v-model="id_number" class="input" placeholder="ID Number" />
                     <legend class="fieldset-legend">Password</legend>
-                    <input type="password" class="input" placeholder="Password" />
+                    <input v-model="password" type="password" class="input" placeholder="Password" />
                 </fieldset>
                 
                 <div class="flex items-center justify-between mt-4">
@@ -38,14 +51,19 @@ import { RouterLink } from 'vue-router';
                 </div>
             
                 <div class="mt-6">
-                    <RouterLink to="admin">
                         <button
                             type="submit"
+                            :disabled="auth.loading"
                             class="btn btn-soft btn-accent w-full"
                         >
-                        Sign in
+                        <span v-if="auth.loading" class="loading loading-spinner loading-sm"></span>
+                        <span>Sign in</span>
                         </button>
-                    </RouterLink> 
+                        <div v-if="auth.error" class="toast">
+                            <div class="alert alert-error">
+                                <span>{{ auth.error }}</span>
+                            </div>
+                        </div>
                 </div>
             </form>
         </div>

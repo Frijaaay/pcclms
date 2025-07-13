@@ -1,5 +1,29 @@
 <script setup>
+import { useAuthStore } from '@/stores/AuthStore';
+import { useRouter } from 'vue-router';
+import { onMounted, reactive } from 'vue';
+const auth = useAuthStore();
+const router = useRouter();
 
+// onMounted(async () => {
+  
+// });
+
+const handleLogout = () => {
+    auth.logout(router);
+}
+import { useRouter } from 'vue-router';
+import { onMounted, reactive } from 'vue';
+const auth = useAuthStore();
+const router = useRouter();
+
+// onMounted(async () => {
+  
+// });
+
+const handleLogout = () => {
+    auth.logout(router);
+}
 </script>
 
 <template>
@@ -15,7 +39,7 @@
 
     <!-- Right Side Elements -->
     <div class="navbar-end space-x-3 pr-2">
-      <p class="">John Doe</p>
+      <p class="">Name goes here</p>
       <!-- Avatar -->
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar size-auto">
@@ -43,10 +67,10 @@
           </RouterLink>
         </li>
         <li>
-          <RouterLink :to="{ name: 'login' }">
+          <button @click="handleLogout" class="w-full text-left">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" /></svg>
             Logout
-          </RouterLink>
+          </button>
         </li>
       </ul>
       </div>

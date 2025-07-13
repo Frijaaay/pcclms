@@ -5,21 +5,22 @@ import vueDevTools from 'vite-plugin-vue-devtools';
 
 // https://vite.dev/config/
 export default defineConfig({
-  // base: '/pcc-library/',
+  // base: 'http://pcclms.com/',
   plugins: [
     vue(),
     vueDevTools(),
   ],
   server: {
     port: 3000,
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/api/, '')
-    //   }
-    // }
-  }, // Proxy setting for api connection
+    // Proxy setting for api connection
+    proxy: {
+      '/api': {
+        target: 'http://pcclms.api/api/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

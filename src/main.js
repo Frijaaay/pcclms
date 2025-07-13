@@ -5,10 +5,15 @@ import 'cally';
 import router from './router';
 import { createApp } from 'vue';
 import App from './App.vue';
+import { createPinia } from 'pinia';
+import { useAuthStore } from '@/stores/AuthStore';
 
 const app = createApp(App);
+const pinia = createPinia();
 
+app.use(pinia);
+const auth = useAuthStore();
+await auth.hydrate(); // Hydrate the auth store with user and token from localStorage
 app.use(router);
-
-app.mount('#app')
+app.mount('#app');
 
