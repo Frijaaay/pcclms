@@ -8,7 +8,6 @@ import RecentTransaction from '@/components/RecentTransaction.vue';
 </script>
 
 <template>
-
     <!-- Section 1: Metric Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-5 gap-2 mx-4 mb-2">
       <TotalCard />

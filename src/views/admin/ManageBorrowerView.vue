@@ -1,6 +1,15 @@
 <script setup>
+import { onMounted } from 'vue';
+import { useUserStore } from '@/stores/userStore';
+
 import Search from '@/components/Search.vue';
 import Button from '@/components/Button.vue';
+
+const users = useUserStore();
+
+onMounted(() => {
+    users.fetchBorrowers();
+});
 </script>
 
 <template>
@@ -11,7 +20,7 @@ import Button from '@/components/Button.vue';
             <p class="text-sm pb-4">Manage list of registered borrowers</p>
             <div class="flex justify-between items-center">
                 <div>
-                    <h2 class="ml-1 font-semibold text-[15px]">All Borrowers: <span class="text-secondary font-bold">100</span></h2>
+                    <h2 class="ml-1 font-semibold text-[15px]">All Borrowers: <span class="text-secondary font-bold">{{ users.borrower_count }}</span></h2>
                 </div>
                 <div class="flex flex-cols justify-end gap-2">
                     <Search />
@@ -49,15 +58,13 @@ import Button from '@/components/Button.vue';
     <!-- Table Body -->
                 <tbody>
                 <!-- row 1 -->
-                    <tr v-for="i in 20" :key="i">
+                    <tr v-for="user in users.borrower" :key="user.id">
                         <th>
                             <label>
                                 <input type="checkbox" class="checkbox checkbox-xs checkbox-accent" />
                             </label>
                         </th>
-                        <td>
-                            {{ i }}
-                        </td>
+                        <td>{{ user.id }}</td>
                         <td>
                             <div class="flex items-center gap-3">
                                 <div class="avatar">
@@ -68,18 +75,22 @@ import Button from '@/components/Button.vue';
                                         </div>
                                 </div>
                             <div>
-                                <div class="font-bold">Hart Hagerty</div>
-                                    <div class="text-sm opacity-50">2025-100{{ i }}</div>
+                                <div class="font-bold">{{ user.name }}</div>
+                                    <div class="text-sm opacity-50">{{ user.id_number }}</div>
                                 </div>
                             </div>
                         </td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.type }}</td>
+                        <td>{{ user.department }}</td>
                         <td>
-                            johndoe@example.com
-                            <br />
+                            <span 
+                                :class="['badge badge-soft badge-sm',
+                                user.status == 'Active' ? 'badge-success' : 'badge-error'
+                                ]">
+                                {{ user.status }}
+                            </span>
                         </td>
-                        <td>College</td>
-                        <td>CEA</td>
-                        <td><span class="badge badge-success badge-soft badge-sm">Active</span></td>
                         <th>
                             <div class="dropdown dropdown-end">
                                 <div role="button" class="btn btn-ghost btn-xs" tabindex="0">

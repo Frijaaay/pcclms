@@ -1,25 +1,10 @@
 <script setup>
+import { useRouter } from 'vue-router';
+import { onMounted, reactive } from 'vue';
 import { useAuthStore } from '@/stores/AuthStore';
-import { useRouter } from 'vue-router';
-import { onMounted, reactive } from 'vue';
+
 const auth = useAuthStore();
 const router = useRouter();
-
-// onMounted(async () => {
-  
-// });
-
-const handleLogout = () => {
-    auth.logout(router);
-}
-import { useRouter } from 'vue-router';
-import { onMounted, reactive } from 'vue';
-const auth = useAuthStore();
-const router = useRouter();
-
-// onMounted(async () => {
-  
-// });
 
 const handleLogout = () => {
     auth.logout(router);
@@ -39,7 +24,7 @@ const handleLogout = () => {
 
     <!-- Right Side Elements -->
     <div class="navbar-end space-x-3 pr-2">
-      <p class="">Name goes here</p>
+      <p class="">{{ auth.user?.name }}</p>
       <!-- Avatar -->
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar size-auto">

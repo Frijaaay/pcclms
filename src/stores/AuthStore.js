@@ -3,8 +3,7 @@ import api from '@/lib/axios';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        user_type: localStorage.getItem('user_type') || null,
-        // user: JSON.parse(localStorage.getItem('user')) || null,
+        user: JSON.parse(localStorage.getItem('user')) || null,
         token: localStorage.getItem('token') || null,
         loading: false,
         error: null,
@@ -21,11 +20,10 @@ export const useAuthStore = defineStore('auth', {
                     password,
                 });
 
-                // this.user = response.data.user;
-                this.user_type = response.data.user_type;
+                this.user = response.data.user;
                 this.token = response.data.token;
-                // localStorage.setItem('user', JSON.stringify(this.user));
-                localStorage.setItem('user_type', this.user_type);
+
+                localStorage.setItem('user', JSON.stringify(this.user));
                 localStorage.setItem('token', this.token);
                 
                 router.push({ name: 'admin-dashboard' });
@@ -59,7 +57,7 @@ export const useAuthStore = defineStore('auth', {
 
             if (!token) {
                 this.token = null;
-                this.user_type = null;
+                this.user = null;
                 return;
             }
 
@@ -68,8 +66,8 @@ export const useAuthStore = defineStore('auth', {
             try {
                 const response = await api.get('/v1/users/me');
 
-                this.user_type = response.data;
-                localStorage.setItem('user_type', JSON.stringify(this.user_type));
+                this.user = response.data;
+                localStorage.setItem('user', JSON.stringify(this.user));
 
             } catch (error) {
                 console.error('Hydration Failed', error);
