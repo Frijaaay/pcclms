@@ -1,7 +1,15 @@
 <script setup>
+import { onMounted } from 'vue';
+import { useBookStore } from '@/stores/BookStore';
 
 import Search from '@/components/Search.vue';
 import Button from '@/components/Button.vue';
+
+const books = useBookStore();
+
+onMounted(() => {
+    books.fetchBooks();
+});
 </script>
 
 <template>
@@ -11,7 +19,7 @@ import Button from '@/components/Button.vue';
             <p class="text-sm pb-4">Manage list of books</p>
             <div class="flex justify-between items-center">
                 <div>
-                    <h2 class="ml-1 font-semibold text-[15px]">All Books: <span class="text-secondary font-bold">100</span></h2>
+                    <h2 class="ml-1 font-semibold text-[15px]">All Books: <span class="text-secondary font-bold">{{ books.book?.book_count }}</span></h2>
                 </div>
                 <div class="flex flex-cols justify-end gap-2">
                     <Search />
@@ -40,7 +48,7 @@ import Button from '@/components/Button.vue';
                         </th>
                         <th>Image</th>
                         <th>Title</th>
-                        <th>Author</th>
+                        <th>Author/s</th>
                         <th>ISBN</th>
                         <th>Category</th>
                         <th>Copies</th>
@@ -51,7 +59,7 @@ import Button from '@/components/Button.vue';
     <!-- Table Body -->
                 <tbody>
                 <!-- row 1 -->
-                    <tr v-for="i in 20" :key="i" class="text-center">
+                    <tr v-for="book in books.book" :key="book.id" class="text-center">
                         <th class="text-left">
                             <label>
                                 <input type="checkbox" class="checkbox checkbox-xs checkbox-accent" />
@@ -62,17 +70,14 @@ import Button from '@/components/Button.vue';
                               class="mask mask-square w-14 h-20" />
                         </td>
                         <td>
-                          <div class="font-bold">To Kill a Mocking Bird</div>
-                          <div class="text-sm opacity-50">Novel by Harper Lee</div>
+                          <div class="font-bold">{{ book.title }}</div>
+                          <div class="text-sm opacity-50">{{ book.author }}</div>
                         </td>
-                        <td>
-                            Harper Lee
-                            <!-- <br /> -->
-                        </td>
-                        <td>9780060173227</td>
-                        <td>Novel</td>
-                        <td>{{ i * 2 }}</td>
-                        <td><span class="badge badge-success badge-soft badge-sm">Available</span></td>
+                        <td>{{ book.author }}</td>
+                        <td>{{ book.isbn }}</td>
+                        <td>{{ book.category }}</td>
+                        <td>{{ book.book_copies_count }}</td>
+                        <td><span :class="['badge badge-soft badge-sm', book.status == 'Available' ? 'badge-success' : 'badge-error']">{{ book.status }}</span></td>
                         <th>
                             <div class="dropdown dropdown-end">
                                 <div role="button" class="btn btn-ghost btn-xs" tabindex="0">

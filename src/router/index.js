@@ -112,11 +112,11 @@ const router = createRouter({
             component: LoginView,
             meta: { isNotAuthenticated: true }
         },
-        {
-            path: "/test",
-            name: "test",
-            component: TestView
-        },
+        // {
+        //     path: "/test",
+        //     name: "test",
+        //     component: TestView
+        // },
         {
             path: "/",
             name: "landing",

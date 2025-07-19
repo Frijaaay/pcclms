@@ -4,9 +4,9 @@ import api from '@/lib/axios';
 export const useUserStore = defineStore('users', {
     state: () => ({
         librarian: JSON.parse(localStorage.getItem('librarian')) || null,
-        librarian_count: localStorage.getItem('librarian_count') || 0,
+        librarian_count: 0,
         borrower: JSON.parse(localStorage.getItem('borrower')) || null,
-        borrower_count: localStorage.getItem('borrower_count') || 0,
+        borrower_count: 0,
         loading: null,
     }), 
     actions: {
@@ -17,7 +17,7 @@ export const useUserStore = defineStore('users', {
             this.librarian = response.data.librarian;
             this.librarian_count = response.data.librarian_count;
             localStorage.setItem('librarian', JSON.stringify(this.librarian));
-            localStorage.setItem('librarian_count', this.librarian_count.toString());
+            // localStorage.setItem('librarian_count', this.librarian_count.toString());
             this.loading = false;
         },
         async fetchBorrowers() {
@@ -28,7 +28,7 @@ export const useUserStore = defineStore('users', {
             this.borrower_count = response.data.borrower_count;
 
             localStorage.setItem('borrower', JSON.stringify(this.borrower));
-            localStorage.setItem('borrower_count', this.borrower_count.toString());
+            // localStorage.setItem('borrower_count', this.borrower_count.toString());
             this.loading = false;
 
         }
