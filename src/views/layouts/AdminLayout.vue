@@ -12,7 +12,7 @@ const sidebarWidth = ref(48)
 const hasRightSidebar = ref(false)
 
 onMounted(() => {
-  hasRightSidebar.value = !!document.getElementById('right-sidebar')
+  hasRightSidebar.value = !!document.getElementById('right-sidebar');
 });
 
 // Extracting route metadata for breadcrumbs

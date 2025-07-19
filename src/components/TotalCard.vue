@@ -1,13 +1,17 @@
 <script setup>
-import { useUserStore } from '@/stores/userStore';
 import { onMounted } from 'vue';
+import { useUserStore } from '@/stores/userStore';
+import { useBookStore } from '@/stores/BookStore';
 
 const users = useUserStore();
+const books = useBookStore();
 
 onMounted(() => {
   users.fetchLibrarians();
   users.fetchBorrowers();
-})
+
+  books.fetchBooks();
+});
 </script>
 
 <template>
@@ -17,7 +21,12 @@ onMounted(() => {
     <div>
       <p class="text-sm text-base-content/80">Total Librarians</p>
       <div class="flex items-center space-x-2 mt-1">
-        <p class="text-2xl font-bold text-base-content">{{ users.librarian_count }}</p>
+        <p class="text-2xl font-bold text-base-content">
+          <span v-if="users.loading" class="loading loading-dots loading-xs"></span>
+          <span v-else>
+            {{ users.librarian_count }}
+          </span>
+        </p>
         <span class="badge badge-success badge-sm gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -45,7 +54,12 @@ onMounted(() => {
     <div>
       <p class="text-sm text-base-content/80">Total Borrowers</p>
       <div class="flex items-center space-x-2 mt-1">
-        <p class="text-2xl font-bold text-base-content">{{ users.borrower_count }}</p>
+        <p class="text-2xl font-bold text-base-content">
+          <span v-if="users.loading" class="loading loading-dots loading-xs"></span>
+          <span v-else>
+            {{ users.borrower_count }}
+          </span>
+          </p>
         <span class="badge badge-success badge-sm gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -71,9 +85,14 @@ onMounted(() => {
 <div class="card bg-base-100 text-base-content w-full shadow-sm border border-base-300 p-4">
   <div class="flex items-start justify-between">
     <div>
-      <p class="text-sm text-base-content/80">Total Books</p>
+      <p class="text-sm text-base-cotent/80">Total Books</p>
       <div class="flex items-center space-x-2 mt-1">
-        <p class="text-2xl font-bold text-base-content">100</p>
+        <p class="text-2xl font-bold text-base-content">
+          <span v-if="books.loading" class="loading loading-dots loading-xs"></span>
+          <span v-else>
+            {{ books.book_count }}
+          </span>
+        </p>
         <span class="badge badge-success badge-sm gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
