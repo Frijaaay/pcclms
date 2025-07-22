@@ -16,8 +16,9 @@ const pinia = createPinia();
     
     const auth = useAuthStore();
     await auth.hydrate(); // Hydrate the auth store with user and token from localStorage
+
     app.use(router);
     app.mount('#app');
-});
+})();
 
 
