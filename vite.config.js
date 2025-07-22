@@ -5,7 +5,7 @@ import vueDevTools from 'vite-plugin-vue-devtools';
 
 // https://vite.dev/config/
 export default defineConfig({
-  // base: 'http://pcclms.com/',
+  // base: 'http://pcclms.vercel.app/',
   plugins: [
     vue(),
     vueDevTools(),
