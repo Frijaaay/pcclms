@@ -8,12 +8,16 @@ import router from './router';
 import { createPinia } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 
-const app = createApp(App);
 const pinia = createPinia();
 
-app.use(pinia);
-const auth = useAuthStore();
-await auth.hydrate(); // Hydrate the auth store with user and token from localStorage
-app.use(router);
-app.mount('#app');
+(async () => {
+    const app = createApp(App);
+    app.use(pinia);
+    
+    const auth = useAuthStore();
+    await auth.hydrate(); // Hydrate the auth store with user and token from localStorage
+    
+    app.use(router);
+    app.mount('#app');
+})();
 
