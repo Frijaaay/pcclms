@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "@/views/auth/LoginView.vue";
 import AdminLayout from "@/views/layouts/AdminLayout.vue";
 import AdminDashboard from '@/views/admin/Dashboard.vue';
-import TestView from '/TestView.vue';
+// import TestView from '/TestView.vue';
 import ManageLibrarianView from '@/views/admin/ManageLibrarianView.vue';
 import ManageBorrowerView from '@/views/admin/ManageBorrowerView.vue';
 import ManageBookView from '@/views/admin/ManageBookView.vue';
@@ -11,6 +11,7 @@ import BorrowBook from '@/views/admin/BorrowBookView.vue';
 import BorrowedBooksView from '@/views/admin/BorrowedBooksView.vue';
 import ReturnedBooksView from '@/views/admin/ReturnedBooksView.vue';
 import ReportsView from '@/views/admin/ReportsView.vue';
+
 import { useAuthStore } from "@/stores/AuthStore";
 
 const router = createRouter({
