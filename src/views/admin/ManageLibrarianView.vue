@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted } from 'vue';
-import { useUserStore } from '@/stores/userStore';
+import { useUserStore } from '@/stores/users';
 
 import Search from '@/components/Search.vue';
 import Button from '@/components/Button.vue';

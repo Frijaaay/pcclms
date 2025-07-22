@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
-import { useUserStore } from '@/stores/userStore';
-import { useBookStore } from '@/stores/BookStore';
+import { useUserStore } from '@/stores/users';
+import { useBookStore } from '@/stores/book';
 
 const users = useUserStore();
 const books = useBookStore();

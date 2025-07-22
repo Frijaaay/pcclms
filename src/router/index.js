@@ -12,7 +12,7 @@ import BorrowedBooksView from '@/views/admin/BorrowedBooksView.vue';
 import ReturnedBooksView from '@/views/admin/ReturnedBooksView.vue';
 import ReportsView from '@/views/admin/ReportsView.vue';
 
-import { useAuthStore } from "@/stores/AuthStore";
+import { useAuthStore } from "@/stores/auth";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
