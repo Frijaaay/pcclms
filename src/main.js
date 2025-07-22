@@ -2,9 +2,9 @@ import './assets/main.css';
 import 'primeicons/primeicons.css';
 import 'cally';
 
-import router from './router';
 import { createApp } from 'vue';
 import App from './App.vue';
+import router from './router';
 import { createPinia } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
 
