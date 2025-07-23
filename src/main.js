@@ -12,13 +12,24 @@ const pinia = createPinia();
 
 (async () => {
     const app = createApp();
+<<<<<<< HEAD
+=======
+    const app = createApp(App);
+>>>>>>> build
     app.use(pinia);
     
     const auth = useAuthStore();
     await auth.hydrate(); // Hydrate the auth store with user and token from localStorage
+<<<<<<<<< Temporary merge branch 1
+    
+    app.use(router);
+    app.mount('#app');
+})();
+=========
 
     app.use(router);
     app.mount('#app');
 })();
 
+>>>>>>>>> Temporary merge branch 2
 
