@@ -2,13 +2,18 @@
 import { useRouter } from 'vue-router';
 import { onMounted, reactive } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import Profile from '@/views/admin/ProfileModal.vue';
+
+//Modal Event
+const emit = defineEmits(['open-modal']);
 
 const auth = useAuthStore();
 const router = useRouter();
 
 const handleLogout = () => {
-    auth.logout(router);
+  auth.logout(router);
 }
+
 </script>
 
 <template>
@@ -40,10 +45,10 @@ const handleLogout = () => {
         tabindex="0"
         class="mt-3 dropdown-content menu bg-base-100 text-base-content rounded-b-md shadow-sm border border-base-300 w-40">
         <li>
-          <RouterLink to="admin/profile">
+          <button @click="emit('open-modal')">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
             My Profile
-          </RouterLink>
+          </button>
         </li>
         <li>
           <RouterLink to="admin/settings">
@@ -62,4 +67,6 @@ const handleLogout = () => {
     </div>
   </div>
 </header>
+
+<Profile />
 </template>

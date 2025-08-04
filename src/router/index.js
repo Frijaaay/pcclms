@@ -11,6 +11,7 @@ import BorrowBook from '@/views/admin/BorrowBookView.vue';
 import BorrowedBooksView from '@/views/admin/BorrowedBooksView.vue';
 import ReturnedBooksView from '@/views/admin/ReturnedBooksView.vue';
 import ReportsView from '@/views/admin/ReportsView.vue';
+import AdminProfile from '@/views/admin/ProfileModal.vue';
 
 import { useAuthStore } from "@/stores/auth";
 

@@ -1,12 +1,23 @@
 import { defineStore } from 'pinia';
 import api from '@/lib/axios';
 
+function safeParse(key) {
+    try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+    } catch {
+        return null;
+    }
+}
+
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        user: JSON.parse(localStorage.getItem('user')) || null,
+        // user: safeParse('user'),
+        user: localStorage.getItem('user') || null,
         token: localStorage.getItem('token') || null,
         loading: false,
         error: null,
+        success: null
     }),
     // getters: {},
     actions: {
@@ -44,6 +55,7 @@ export const useAuthStore = defineStore('auth', {
             } finally {
                 this.token = null;
                 this.user_type = null;
+
                 localStorage.removeItem('token');
                 localStorage.removeItem('user_type');
 
@@ -71,9 +83,28 @@ export const useAuthStore = defineStore('auth', {
 
             } catch (error) {
                 console.error('Hydration Failed', error);
-                this.logout();
+                await this.logout();
+            }
+        },
+        async updateMe(updatedMe) {
+            this.loading = true;
+            this.error = null;
+            this.error = null;
+
+            try {
+                const response = await api.put('/v1/users/me', updatedMe);
+
+                this.user = response.data;
+                localStorage.setItem('user', JSON.stringify(this.user));
+            } catch (error) {
+                this.error = error.response?.data?.message || 'Updating Profile Failed';
             } finally {
-                console.log('Hydration Successful');
+                this.loading = false;
+                this.success = 'Profile Updated Successfully!';
+
+                setTimeout(() => {
+                   this.success = null; 
+                }, 3000);
             }
         }
     },

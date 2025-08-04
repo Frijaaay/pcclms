@@ -6,6 +6,7 @@ import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
 import Footer from '@/components/Footer.vue';
 import Breadcrumb from '@/components/Breadcrumb.vue';
+import ProfileModal from '../admin/ProfileModal.vue';
 
 // Reactive state for sidebar width and right sidebar visibility
 const sidebarWidth = ref(48)
@@ -29,13 +30,16 @@ const currentPage = computed(() => {
   const matchedRoute = route.matched.slice().reverse().find(r => r.meta?.currentPage)
   return matchedRoute?.meta.currentPage || ''
 });
+
+// Modal
+const isModalOpen = ref(false);
 </script>
 
 <template>
 
   <!-- Fixed Header -->
   <div class="fixed top-0 left-0 right-0 h-[60px] z-30">
-    <Header />
+    <Header @open-modal="isModalOpen = true"/>
   </div>
 
   <!-- Main Content (below header) -->
@@ -69,4 +73,9 @@ const currentPage = computed(() => {
       </div>
     </div>
   </section>
+
+  <ProfileModal 
+    :isOpen="isModalOpen"
+    @close-modal="isModalOpen = false"
+  />
 </template>
