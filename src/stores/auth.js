@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth', {
         // user: safeParse('user'),
         user: localStorage.getItem('user') || null,
         token: localStorage.getItem('token') || null,
-        loading: false,
+        loading: null,
         error: null,
         success: null
     }),
@@ -89,22 +89,23 @@ export const useAuthStore = defineStore('auth', {
         async updateMe(updatedMe) {
             this.loading = true;
             this.error = null;
-            this.error = null;
+            this.success = null;
 
             try {
                 const response = await api.put('/v1/users/me', updatedMe);
 
                 this.user = response.data;
                 localStorage.setItem('user', JSON.stringify(this.user));
-            } catch (error) {
-                this.error = error.response?.data?.message || 'Updating Profile Failed';
-            } finally {
-                this.loading = false;
+
                 this.success = 'Profile Updated Successfully!';
 
                 setTimeout(() => {
                    this.success = null; 
                 }, 3000);
+            } catch (error) {
+                this.error = error.response?.data?.message || 'Updating Profile Failed';
+            } finally {
+                this.loading = false;
             }
         }
     },

@@ -8,6 +8,8 @@ export const useUserStore = defineStore('users', {
         borrower: JSON.parse(localStorage.getItem('borrower')) || null,
         borrower_count: 0,
         loading: null,
+        error: null,
+        success: null
     }), 
     actions: {
         async fetchLibrarians() {
@@ -17,7 +19,7 @@ export const useUserStore = defineStore('users', {
             this.librarian = response.data.librarian;
             this.librarian_count = response.data.librarian_count;
             localStorage.setItem('librarian', JSON.stringify(this.librarian));
-            // localStorage.setItem('librarian_count', this.librarian_count.toString());
+            localStorage.setItem('librarian_count', this.librarian_count.toString());
             this.loading = false;
         },
         async fetchBorrowers() {
@@ -30,7 +32,37 @@ export const useUserStore = defineStore('users', {
             localStorage.setItem('borrower', JSON.stringify(this.borrower));
             // localStorage.setItem('borrower_count', this.borrower_count.toString());
             this.loading = false;
+        },
+        async createUser(createdUser) {
+            this.loading = true;
+            this.error = null;
 
-        }
+            try {
+                const response = await api.post('v1/users/librarians', createdUser);
+
+                this.librarian.push(response.data.librarian);
+                this.librarian_count = response.data.librarian_count;
+
+                localStorage.setItem('librarian', JSON.stringify(this.librarian));
+                localStorage.setItem('librarian_count', this.librarian_count.toString());
+
+                this.success = 'User Created Successfully';
+
+                setTimeout(() => {
+                    this.success = null;
+                }, 3000);
+            } catch (error) {
+                this.error = error.response?.data?.message || 'Creating User Failed';
+
+                setTimeout(() => {
+                    this.error = null;
+                }, 5000)
+            } finally {
+                this.loading = false;
+            }
+        },
+        async editUser() {
+
+        },
     }
 });
