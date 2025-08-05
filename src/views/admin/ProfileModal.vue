@@ -1,5 +1,6 @@
 <script setup>
 import { computed, reactive, ref, onMounted } from 'vue';
+import { onClickOutside } from '@vueuse/core';
 import { useAuthStore } from '@/stores/auth';
 
 const auth = useAuthStore();
@@ -39,14 +40,26 @@ onMounted(() => {
 
 const handleUpdate = async () => {
   await auth.updateMe(editableUser);
-  edit.value = false;
+
+  if (auth.success) {
+    edit.value = false;
+    emit('close-modal');
+  }
 };
 
+/** On Click Outside Event */
+const closeMe = ref(null);
+onClickOutside(closeMe, (event) => {
+  if  (props.isOpen) {
+    emit('close-modal', event);
+    edit.value = false;
+  }
+});
 </script>
 
 <template>
   <div :class="modalClasses">
-    <div class="card border-base-300 border bg-base-100 shadow-sm p-4 mx-4">
+    <div ref="closeMe" class="card border-base-300 border bg-base-100 shadow-sm p-4 mx-4">
       <form @submit.prevent="handleUpdate">
       <div class="space-y-8">
         <!-- User Profile -->
