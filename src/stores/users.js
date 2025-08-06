@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
 import api from '@/lib/axios';
+import { stringify } from 'postcss';
 
 export const useUserStore = defineStore('users', {
     state: () => ({
-        librarian: JSON.parse(localStorage.getItem('librarian')) || null,
+        librarians: JSON.parse(localStorage.getItem('librarians')) || null,
         librarian_count: 0,
-        borrower: JSON.parse(localStorage.getItem('borrower')) || null,
+        borrowers: JSON.parse(localStorage.getItem('borrowers')) || null,
         borrower_count: 0,
         loading: null,
         error: null,
@@ -16,9 +17,9 @@ export const useUserStore = defineStore('users', {
             this.loading = true;
             const response = await api.get('/v1/users/librarians');
             
-            this.librarian = response.data.librarian;
+            this.librarians = response.data.librarians;
             this.librarian_count = response.data.librarian_count;
-            localStorage.setItem('librarian', JSON.stringify(this.librarian));
+            localStorage.setItem('librarians', JSON.stringify(this.librarians));
             localStorage.setItem('librarian_count', this.librarian_count.toString());
             this.loading = false;
         },
@@ -26,11 +27,11 @@ export const useUserStore = defineStore('users', {
             this.loading = true;
 
             const response = await api.get('/v1/users/borrowers');
-            this.borrower = response.data.borrower;
+            this.borrowers = response.data.borrowers;
             this.borrower_count = response.data.borrower_count;
 
-            localStorage.setItem('borrower', JSON.stringify(this.borrower));
-            // localStorage.setItem('borrower_count', this.borrower_count.toString());
+            localStorage.setItem('borrowers', JSON.stringify(this.borrowers));
+            localStorage.setItem('borrower_count', this.borrower_count.toString());
             this.loading = false;
         },
         async createUser(createdUser) {
@@ -40,10 +41,10 @@ export const useUserStore = defineStore('users', {
             try {
                 const response = await api.post('v1/users/librarians', createdUser);
 
-                this.librarian.push(response.data.librarian);
+                this.librarians.push(response.data.librarian);
                 this.librarian_count = response.data.librarian_count;
 
-                localStorage.setItem('librarian', JSON.stringify(this.librarian));
+                localStorage.setItem('librarians', JSON.stringify(this.librarians));
                 localStorage.setItem('librarian_count', this.librarian_count.toString());
 
                 this.success = 'User Created Successfully';
@@ -56,13 +57,37 @@ export const useUserStore = defineStore('users', {
 
                 setTimeout(() => {
                     this.error = null;
-                }, 5000)
+                }, 5000);
             } finally {
                 this.loading = false;
             }
         },
-        async editUser() {
+        async createBorrower(createdBorrower) {
+            this.loading = true
+            
+            try {
+                const response = await api.post('v1/users/borrowers', createdBorrower);
 
+                this.borrowers.push(response.data.borrower);
+                this.borrower_count = response.data.borrower_count;
+
+                localStorage.setItem('borrowers', JSON.stringify(this.borrowers));
+                localStorage.setItem('borrower_count', this.borrower_count.toString());
+
+                this.success = 'User Created Successfully';
+
+                setTimeout(() => {
+                    this.success = null;
+                }, 3000);
+            } catch (error) {
+                this.error = error.response?.data?.message || 'Creating User Failed';
+
+                setTimeout(() => {
+                    this.error = null;
+                }, 5000);
+            } finally {
+                this.loading = false
+            }
         },
     }
 });

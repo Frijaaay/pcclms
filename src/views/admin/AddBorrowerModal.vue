@@ -1,15 +1,13 @@
 <script setup>
-import { computed, reactive} from 'vue';
+import { reactive, computed } from 'vue';
 import { useUserStore } from '@/stores/users';
-import Button from '@/components/Button.vue';
 
 const user = useUserStore();
-// const create = ref(false);
 
 const props = defineProps({
     isOpen: {
         type: Boolean,
-        required: true,
+        required: true
     }
 });
 
@@ -20,18 +18,18 @@ const modalClasses = computed(() => [
     props.isOpen ? 'modal-open' : ''
 ]);
 
-const createdUser = reactive({
+const createdBorrower = reactive({
     id_number: '',
     name: '',
     email: '',
-    type: 'Employee',
-    department: 'Library',
+    type: '',
+    department: '',
 });
 
 const handleCreate = async () => {
-    await user.createUser(createdUser);
+    await user.createBorrower(createdBorrower);
 
-    if (user.success) {
+    if (user.success){
         emit('close-modal')
     }
 };
@@ -40,20 +38,26 @@ const handleCreate = async () => {
 <template>
     <dialog :class="modalClasses">
         <form @submit.prevent="handleCreate" class="modal-box fieldset bg-base-200 border-base-300 w-md border p-4">
-            <legend class="fieldset-legend">Add Librarian</legend>
+            <legend class="fieldset-legend">Add Borrower</legend>
             <label class="label">Name</label>
-            <input v-model="createdUser.name" type="text" class="input" placeholder="Full Name" required/>
+            <input v-model="createdBorrower.name" type="text" class="input" placeholder="Full Name" required/>
             <label class="label">ID Number</label>
-            <input v-model="createdUser.id_number" type="text" class="input" placeholder="20**-******" required/>
+            <input v-model="createdBorrower.id_number" type="text" class="input" placeholder="20**-******" required/>
             <label class="label">Email</label>
-            <input v-model="createdUser.email" type="email" class="input" placeholder="Email" required/>
+            <input v-model="createdBorrower.email" type="email" class="input" placeholder="Email" required/>
             <label class="label">Type</label>
-            <select v-model="createdUser.type" class="select" required>
+            <select v-model="createdBorrower.type" class="select" required>
+                <option value="JHS">JHS</option>
+                <option value="SHS">SHS</option>
+                <option value="College">College</option>
                 <option value="Employee">Employee</option>
             </select>
             <label class="label">Department</label>
-            <select v-model="createdUser.department" class="select" required>
-                <option value="Library">Library</option>
+            <select v-model="createdBorrower.department" class="select" required>
+                <option value="Faculty">Faculty</option>
+                <option value="STEM">STEM</option>
+                <option value="CEAT">CEAT</option>
+                <option value="Grade 10">Grade 10</option>
             </select>
 
             <div class="flex justify-end gap-4 mt-2">

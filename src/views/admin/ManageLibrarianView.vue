@@ -45,15 +45,11 @@ const isModalOpen = ref(false);
     <!-- Table Head -->
                 <thead class="table-pin-rows">
                     <tr class="bg-base-200">
-                        <th>
-                            <label>
-                                <input type="checkbox" class="checkbox checkbox-xs checkbox-accent" />
-                            </label>
-                        </th>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Type</th>
+                        <th>Department</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -61,12 +57,7 @@ const isModalOpen = ref(false);
     <!-- Table Body -->
                 <tbody>
                 <!-- row 1 -->
-                    <tr v-for="user in users.librarian" :key="user.id">
-                        <td>
-                            <label>
-                                <input type="checkbox" class="checkbox checkbox-xs checkbox-accent" />
-                            </label>
-                        </td>
+                    <tr v-for="user in users.librarians" :key="user.id">
                         <td>
                             {{ user.id }}
                         </td>
@@ -87,6 +78,7 @@ const isModalOpen = ref(false);
                         </td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.type }}</td>
+                        <td>{{ user.department }}</td>
                         <td>
                             <span 
                                 :class="['badge badge-soft badge-sm', 
