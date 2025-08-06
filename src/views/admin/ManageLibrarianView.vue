@@ -53,6 +53,7 @@ const isModalOpen = ref(false);
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -61,11 +62,11 @@ const isModalOpen = ref(false);
                 <tbody>
                 <!-- row 1 -->
                     <tr v-for="user in users.librarian" :key="user.id">
-                        <th>
+                        <td>
                             <label>
                                 <input type="checkbox" class="checkbox checkbox-xs checkbox-accent" />
                             </label>
-                        </th>
+                        </td>
                         <td>
                             {{ user.id }}
                         </td>
@@ -85,6 +86,7 @@ const isModalOpen = ref(false);
                             </div>
                         </td>
                         <td>{{ user.email }}</td>
+                        <td>{{ user.type }}</td>
                         <td>
                             <span 
                                 :class="['badge badge-soft badge-sm', 
