@@ -2,15 +2,18 @@
 import { onMounted } from 'vue';
 import { useUserStore } from '@/stores/users';
 import { useBookStore } from '@/stores/book';
+import { useReportStore } from '@/stores/reports';
 
 const users = useUserStore();
 const books = useBookStore();
+const reports = useReportStore();
 
 onMounted(() => {
   users.fetchLibrarians();
   users.fetchBorrowers();
-
   books.fetchBooks();
+  reports.fetchBorrowedBooks();
+  reports.fetchReturnedBooks();
 });
 </script>
 
@@ -120,7 +123,7 @@ onMounted(() => {
     <div>
       <p class="text-sm text-base-content/80">Borrowed</p>
       <div class="flex items-center space-x-2 mt-1">
-        <p class="text-2xl font-bold text-base-content">100</p>
+        <p class="text-2xl font-bold text-base-content">{{ reports.borrowed_books_count }}</p>
         <span class="badge badge-success badge-sm gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
@@ -148,7 +151,7 @@ onMounted(() => {
     <div>
       <p class="text-sm text-base-content/80">Returned</p>
       <div class="flex items-center space-x-2 mt-1">
-        <p class="text-2xl font-bold text-base-content">100</p>
+        <p class="text-2xl font-bold text-base-content">{{ reports.returned_books_count }}</p>
         <span class="badge badge-success badge-sm gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
