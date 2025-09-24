@@ -28,9 +28,9 @@ const handleLogin = () => {
             <form @submit.prevent="handleLogin" class="mt-4 w-full">
                 <fieldset class="fieldset text-">
                     <legend class="fieldset-legend">ID Number</legend>
-                    <input v-model="id_number" class="input" placeholder="ID Number" />
+                    <input v-model="id_number" class="input" placeholder="ID Number" required/>
                     <legend class="fieldset-legend">Password</legend>
-                    <input v-model="password" type="password" class="input" placeholder="Password" />
+                    <input v-model="password" type="password" class="input" placeholder="Password" required/>
                 </fieldset>
                 
                 <div class="flex items-center justify-between mt-4">

@@ -19,7 +19,13 @@ onMounted(() => {
             <p class="text-sm pb-4">Manage list of books</p>
             <div class="flex justify-between items-center">
                 <div>
-                    <h2 class="ml-1 font-semibold text-[15px]">All Books: <span class="text-secondary font-bold">{{ books.book?.book_count }}</span></h2>
+                    <h2 class="ml-1 font-semibold text-[15px]">
+                        All Books: 
+                        <span v-if="books.loading" class="loading loading-dots loading-xs"></span>
+                        <span v-else class="text-secondary font-bold">
+                            {{ books.book_count }}
+                        </span>
+                    </h2>
                 </div>
                 <div class="flex flex-cols justify-end gap-2">
                     <Search />
@@ -59,7 +65,7 @@ onMounted(() => {
     <!-- Table Body -->
                 <tbody>
                 <!-- row 1 -->
-                    <tr v-for="book in books.book" :key="book.id" class="text-center">
+                    <tr v-for="book in books.books" :key="book.id" class="text-center">
                         <th class="text-left">
                             <label>
                                 <input type="checkbox" class="checkbox checkbox-xs checkbox-accent" />
@@ -73,7 +79,12 @@ onMounted(() => {
                           <div class="font-bold">{{ book.title }}</div>
                           <div class="text-sm opacity-50">{{ book.author }}</div>
                         </td>
-                        <td>{{ book.author }}</td>
+                        <td>
+                            <div>{{ book.author }}</div>
+                            <div class="text-sm opacity-50">{{ book.author_1 }}</div>
+                            <div class="text-sm opacity-50">{{ book.author_2 }}</div>
+                            <div class="text-sm opacity-50">{{ book.author_3 }}</div>
+                        </td>
                         <td>{{ book.isbn }}</td>
                         <td>{{ book.category }}</td>
                         <td>{{ book.book_copies_count }}</td>

@@ -9,7 +9,7 @@ const edit = ref(false);
 const props = defineProps({
   isOpen: {
     type: Boolean,
-    required: true
+    default: false
   }
 });
 
@@ -30,9 +30,10 @@ const editableUser = reactive({
 
 onMounted(() => {
   if (auth.user) {
+    editableUser.user_type_id = auth.user.user_type_id;
     editableUser.name = auth.user.name;
     editableUser.email = auth.user.email;
-    // editableUser.id_number = auth.user.id_number;
+    editableUser.id_number = auth.user.id_number;
     editableUser.department = auth.user.department;
     editableUser.type = auth.user.type;
   }
@@ -42,8 +43,8 @@ const handleUpdate = async () => {
   await auth.updateMe(editableUser);
 
   if (auth.success) {
-    edit.value = false;
     emit('close-modal');
+    edit.value = false;
   }
 };
 
@@ -77,15 +78,18 @@ onClickOutside(closeMe, (event) => {
             <img src="/src/assets/image/default-avatar.jpg" alt="Avatar" class="w-26 h-26 rounded-full" />
             <div class="space-y-2">
               <label class="block text-sm font-medium">Full Name</label>
-              <input v-model="editableUser.name" type="text" class="input input-md bg-base-300 w-50" :disabled="!edit" required/>
+              <input v-if="!edit" v-model="editableUser.name" type="text" class="input input-md bg-base-200 w-50" readonly/>
+              <input v-else v-model="editableUser.name" type="text" class="input input-md bg-base-200 w-50" required/>
       </div>
       <div class="space-y-2">
         <label class="block text-sm font-medium">ID No.</label>
-          <input :value="auth.user?.id_number" type="text" class="input input-md bg-base-300 w-50" disabled/>
+          <input v-if="!edit" v-model="editableUser.id_number" type="text" class="input input-md bg-base-200 w-50" readonly/>
+          <input v-else :value="auth.user?.id_number" type="text" class="input input-md bg-base-200 w-50" required/>
       </div>
       <div class="space-y-2">
         <label class="block text-sm font-medium">Email</label>
-        <input v-model="editableUser.email" type="email" class="input input-md bg-base-300 w-50" :disabled="!edit" required/>
+        <input v-if="!edit" v-model="editableUser.email" type="text" class="input input-md bg-base-200 w-50" readonly/>
+        <input v-else v-model="editableUser.email" type="email" class="input input-md bg-base-200 w-50" required/>
       </div>
     </div>
     </section>
@@ -94,28 +98,27 @@ onClickOutside(closeMe, (event) => {
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
         <div class="space-y-2">
           <label class="block text-sm font-medium">Department</label>
-          <select v-model="editableUser.department" class="select bg-base-300 px-3 py-2 w-full" :disabled="!edit">
-            <option value="IT Faculty">IT Faculty</option>
+          <input v-if="!edit" v-model="editableUser.department" type="text" class="input input-md bg-base-200 w-full" readonly/>
+          <select v-else v-model="editableUser.department" class="select bg-base-200 px-3 py-2 w-full" required>
+            <option value="Faculty">Faculty</option>
             <option value="CEAT">CEAT</option>
             <option value="STEM">STEM</option>
-          </select>
-        </div>
-        <div class="space-y-2">
-          <label class="block text-sm font-medium">Role</label>
-          <select value="auth.user?.user_type.name" class="select bg-base-300 px-3 py-2 w-full" disabled>
-            <option value="Admin">Admin</option>
-            <option value="Librarian">Librarian</option>
-            <option value="Borrower">Borrower</option>
+            <option value="IT Department">IT Department</option>
           </select>
         </div>
         <div class="space-y-2">
           <label class="block text-sm font-medium">Type</label>
-          <select v-model="editableUser.type" class="select bg-base-300 px-3 py-2 w-full" :disabled="!edit">
+          <input v-if="!edit" v-model="editableUser.type" type="text" class="input input-md bg-base-200 w-full" readonly/>
+          <select v-else v-model="editableUser.type" class="select bg-base-200 px-3 py-2 w-full" :readonly="!edit">
             <option value="Employee">Employee</option>
             <option value="JHS">JHS</option>
             <option value="SHS">SHS</option>
             <option value="College">College</option>
           </select>
+        </div>
+        <div class="space-y-2">
+          <label class="block text-sm font-medium">Role</label>
+          <input :value="auth.user?.user_type?.name" class="input bg-base-200 px-3 py-2 w-full" readonly />
         </div>
       </div>
     </section>

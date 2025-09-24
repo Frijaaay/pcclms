@@ -21,8 +21,9 @@ const modalClasses = computed(() => [
 ]);
 
 const createdUser = reactive({
-    id_number: '',
+    user_type_id: 2,
     name: '',
+    id_number: '',
     email: '',
     type: 'Employee',
     department: 'Library',
@@ -32,7 +33,7 @@ const handleCreate = async () => {
     await user.createUser(createdUser);
 
     if (user.success) {
-        emit('close-modal')
+        emit('close-modal');
     }
 };
 </script>

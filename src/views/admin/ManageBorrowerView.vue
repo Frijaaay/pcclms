@@ -16,7 +16,8 @@ const isModalOpen = ref(false);
 </script>
 
 <template>
-        <!-- Borrower Information Management Card -->
+
+    <!-- Borrower Information Management Card -->
     <div class="card border-base-300 border bg-base-100 shadow-sm p-4 mx-4">
         <div class="card-header pb-4">
             <h2 class="card-title">Borrower Information</h2>
@@ -44,7 +45,6 @@ const isModalOpen = ref(false);
     <!-- Table Head -->
                 <thead class="table-pin-rows">
                     <tr class="bg-base-200">
-                        <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Type</th>
@@ -57,7 +57,6 @@ const isModalOpen = ref(false);
                 <tbody>
                 <!-- row 1 -->
                     <tr v-for="user in users.borrowers" :key="user.id">
-                        <td>{{ user.id }}</td>
                         <td>
                             <div class="flex items-center gap-3">
                                 <div class="avatar">
@@ -78,12 +77,8 @@ const isModalOpen = ref(false);
                         <td>{{ user.department }}</td>
                         <td>
                             <span 
-                                :class="['badge badge-soft badge-sm',
-                                user.status == 'Active' ? 'badge-success' : 'badge-error'
-                                ]">
-                                {{ user.status }}
-                            </span>
-                        </td>
+                                :class="['badge badge-soft badge-sm', 
+                                user.status == 'Active' ? 'badge-success' : 'badge-error']">{{ user.status }}</span></td>
                         <th>
                             <div class="dropdown dropdown-end">
                                 <div role="button" class="btn btn-ghost btn-xs" tabindex="0">
@@ -101,8 +96,9 @@ const isModalOpen = ref(false);
             </table>
         </div>
     </div>
+
     <AddBorrowerModal 
-        :is-open="isModalOpen"
-        @close-modal="isModalOpen = false"
+        :is-open="isModalOpen" 
+        @close-modal="isModalOpen = false"    
     />
 </template>

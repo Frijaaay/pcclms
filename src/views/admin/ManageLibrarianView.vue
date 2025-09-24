@@ -45,7 +45,6 @@ const isModalOpen = ref(false);
     <!-- Table Head -->
                 <thead class="table-pin-rows">
                     <tr class="bg-base-200">
-                        <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Type</th>
@@ -57,10 +56,7 @@ const isModalOpen = ref(false);
     <!-- Table Body -->
                 <tbody>
                 <!-- row 1 -->
-                    <tr v-for="user in users.librarians" :key="user.id">
-                        <td>
-                            {{ user.id }}
-                        </td>
+                    <tr v-for="librarian in users.librarians" key="librarian.id">
                         <td>
                             <div class="flex items-center gap-3">
                                 <div class="avatar">
@@ -71,18 +67,18 @@ const isModalOpen = ref(false);
                                         </div>
                                 </div>
                             <div>
-                                <div class="font-bold">{{ user.name }}</div>
-                                    <div class="text-sm opacity-50">{{ user.id_number }}</div>
+                                <div class="font-bold">{{ librarian?.name }}</div>
+                                    <div class="text-sm opacity-50">{{ librarian?.id_number }}</div>
                                 </div>
                             </div>
                         </td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.type }}</td>
-                        <td>{{ user.department }}</td>
+                        <td>{{ librarian?.email }}</td>
+                        <td>{{ librarian?.type }}</td>
+                        <td>{{ librarian?.department }}</td>
                         <td>
                             <span 
                                 :class="['badge badge-soft badge-sm', 
-                                user.status == 'Active' ? 'badge-success' : 'badge-error']">{{ user.status }}</span></td>
+                                librarian?.status == 'Active' ? 'badge-success' : 'badge-error']">{{ librarian?.status }}</span></td>
                         <th>
                             <div class="dropdown dropdown-end">
                                 <div role="button" class="btn btn-ghost btn-xs" tabindex="0">

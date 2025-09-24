@@ -12,7 +12,7 @@ export default defineConfig({
     // Proxy setting for api connection
     proxy: {
       '/api': {
-        target: 'http://pcclms.api/api/',
+        target: 'http://pcclms.api/api/v2/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

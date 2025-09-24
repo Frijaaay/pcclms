@@ -25,6 +25,7 @@ const router = createRouter({
             children: [
                 {
                     path: '',
+                    name: 'redirect-to-dashboard',
                     redirect: 'admin/dashboard'
                 },
                 {

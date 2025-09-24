@@ -26,13 +26,13 @@ export const useAuthStore = defineStore('auth', {
             this.error = null;
 
             try {
-                const response = await api.post('/v1/users/login', {
+                const response = await api.post('/auth/login', {
                     id_number,
                     password,
                 });
 
                 this.user = response.data.user;
-                this.token = response.data.token;
+                this.token = response.data.token.value;
 
                 localStorage.setItem('user', JSON.stringify(this.user));
                 localStorage.setItem('token', this.token);
@@ -40,7 +40,11 @@ export const useAuthStore = defineStore('auth', {
                 router.push({ name: 'admin-dashboard' });
                 
             } catch (error) {
-                this.error = error.response?.data?.error || 'Login failed';
+                this.error = error.response?.data?.error?.message || 'Invalid username or password';
+
+                setTimeout(() => {
+                    this.error = null;
+                }, 3000);
             } finally {
                 this.loading = false;
             }
@@ -49,15 +53,15 @@ export const useAuthStore = defineStore('auth', {
         async logout(router) {
             
             try {
-                await api.post('/v1/users/logout');
+                await api.post('/auth/logout');
+                console.log('Logout success');
             } catch (error) {
                 console.error('Logout failed:', error);
             } finally {
                 this.token = null;
                 this.user_type = null;
 
-                localStorage.removeItem('token');
-                localStorage.removeItem('user_type');
+                localStorage.clear();
 
                 router.push({ name: 'login' });
             }
@@ -76,10 +80,11 @@ export const useAuthStore = defineStore('auth', {
             this.token = token;
 
             try {
-                const response = await api.get('/v1/users/me');
+                const response = await api.get('/auth/hydrate');
 
-                this.user = response.data;
+                this.user = response.data.user;
                 localStorage.setItem('user', JSON.stringify(this.user));
+                console.log(response.data.message);
 
             } catch (error) {
                 console.error('Hydration Failed', error);
@@ -92,15 +97,15 @@ export const useAuthStore = defineStore('auth', {
             this.success = null;
 
             try {
-                const response = await api.put('/v1/users/me', updatedMe);
+                const response = await api.put(`/users/update/${this.user.id}`, updatedMe);
 
-                this.user = response.data;
+                this.user = response.data.user;
                 localStorage.setItem('user', JSON.stringify(this.user));
 
-                this.success = 'Profile Updated Successfully!';
+                this.success = response.data?.message ||'Profile Updated Successfully!';
 
                 setTimeout(() => {
-                   this.success = null; 
+                    this.success = null; 
                 }, 3000);
             } catch (error) {
                 this.error = error.response?.data?.message || 'Updating Profile Failed';
