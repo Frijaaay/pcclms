@@ -2,6 +2,16 @@
 import Search from '@/components/Search.vue';
 import Button from '@/components/Button.vue';
 import DatePicker from '@/components/DatePicker.vue';
+
+import { onMounted } from 'vue';
+import { useReportStore } from '@/stores/reports';
+
+const reports = useReportStore();
+
+onMounted(() => {
+  reports.fetchBorrowedBooks();
+});
+
 </script>
 
 <template>
@@ -41,47 +51,48 @@ import DatePicker from '@/components/DatePicker.vue';
             <th>Date Borrowed</th>
             <th>Due Date</th>
             <th>Condition</th>
-            <th>Penalty</th>
             <th>Action</th>
           </tr>
         </thead>
         <!-- Table Body -->
         <tbody>
           <!-- row 1 -->
-          <tr v-for="i in 20" :key="i" class="text-center">
-          <td>{{ Math.floor(10000000 + Math.random() * 90000000) }}</td>
+          <tr v-for="borrowed_book in reports.borrowed_books" :key="borrowed_book.id" class="text-center">
+          <td>{{ borrowed_book.id }}</td>
           <td>
-            {{ i * 10 ^ 100 / 5 }}
+            {{ borrowed_book.book_copy_id }}
           </td>
           <td>
-            <div class="font-bold">To Kill a Mocking Bird</div>
-            <div class="text-sm opacity-50">Novel by Harper Lee</div>
+            <div class="font-bold">{{ borrowed_book.book_title }}</div>
+            <div class="text-sm opacity-50">{{ borrowed_book.book_author }}</div>
           </td>
           <td>
-            <div class="font-bold">John Doe Borrower</div>
-            <div class="text-sm opacity-50">123123</div>
+            <div class="font-bold">{{ borrowed_book.borrower_name }}</div>
+            <div class="text-sm opacity-50">{{ borrowed_book.borrower_id }}</div>
           </td>
           <td>
-            <div class="font-bold">John Due</div>
-            <div class="text-sm opacity-50">Librarian ID</div>
+            <div class="font-bold">{{ borrowed_book.librarian_name }}</div>
+            <div class="text-sm opacity-50">{{ borrowed_book.librarian_id }}</div>
           </td>
           <td>
-              {{ new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toLocaleDateString() }}
+              {{ borrowed_book.borrowed_at }}
             <!-- <br /> -->
           </td>
           <td>
-            {{
-              (() => {
-                const borrowed = new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000);
-                const due = new Date(borrowed.getTime() + 3 * 24 * 60 * 60 * 1000);
-                return due.toLocaleDateString();
-              })()
-            }}
+            {{ borrowed_book.due_at }}
           </td>
           <td>
-            <span class="badge badge-success badge-soft badge-sm">{{ ['Good', 'Damaged', 'Lost'][Math.floor(Math.random() * 3)] }}</span>
+            <span 
+              :class="[
+                'badge badge-soft badge-sm',
+                {
+                  'badge-success' : borrowed_book.book_condition === 'Good',
+                  'badge-warning' : borrowed_book.book_condition === 'Slightly Damaged',
+                  'badge-error' : borrowed_book.book_condition === 'Severly Damaged' || borrowed_book.book_condition === 'Lost'
+                }
+                
+                ]">{{ borrowed_book.book_condition }}</span>
           </td>
-          <td>Available</td>
           <th>
             <div class="dropdown dropdown-end">
             <div role="button" class="btn btn-ghost btn-xs" tabindex="0">
