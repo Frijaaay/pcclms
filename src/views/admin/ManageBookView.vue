@@ -87,7 +87,7 @@ onMounted(() => {
                         </td>
                         <td>{{ book.isbn }}</td>
                         <td>{{ book.category }}</td>
-                        <td>{{ book.book_copies_count }}</td>
+                        <td>{{ book.available_book_copies_count }}</td>
                         <td><span :class="['badge badge-soft badge-sm', book.status == 'Available' ? 'badge-success' : 'badge-error']">{{ book.status }}</span></td>
                         <th>
                             <div class="dropdown dropdown-end">
