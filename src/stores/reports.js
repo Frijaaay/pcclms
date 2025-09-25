@@ -3,13 +3,14 @@ import api from '@/lib/axios';
 
 export const useReportStore = defineStore('reports', {
     state: () => ({
-        borrowed_books: JSON.parse(localStorage.getItem('borrowed_books')) | null,
+        reports: JSON.parse(localStorage.getItem('reports')) || null,
+        borrowed_books: JSON.parse(localStorage.getItem('borrowed_books')) || null,
         borrowed_books_count: 0,
-        returned_books: JSON.parse(localStorage.getItem('returned_books')) | null,
+        returned_books: JSON.parse(localStorage.getItem('returned_books')) || null,
         returned_books_count: 0,
-        loading: null,
-        error: null,
-        success: null,
+        loading: false,
+        error: false,
+        success: false,
     }),
     getters: {},
     actions: {
@@ -49,5 +50,19 @@ export const useReportStore = defineStore('reports', {
                 console.error(response.data.error.message, error);
             }
         },
+        async fetchReports() {
+            this.loading = true;
+            this.error = null;
+
+            try {
+                const response = await api.get('/reports/all');
+
+                this.reports = response.data.content;
+                localStorage.setItem('reports', JSON.stringify(this.reports));
+                this.loading = false;
+            } catch (error) {
+                console.error(response.data.error.message, error);
+            }
+        }
     }
 });
