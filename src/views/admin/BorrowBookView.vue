@@ -43,7 +43,7 @@
     </div>
 
     <!-- Table -->
-    <div class="overflow-x-auto overflow-y-scroll h-110 rounded-lg">
+    <div class="overflow-x-auto overflow-y-scroll h-100 rounded-lg">
       <table class="table table-zebra table-sm table-pin-rows">
       <!-- Table Head -->
       <thead class="table-pin-rows">

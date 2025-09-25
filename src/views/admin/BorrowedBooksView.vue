@@ -38,7 +38,7 @@ onMounted(() => {
         </div>
       </div>
       <!-- Table Container -->
-      <div class="overflow-x-auto overflow-y-scroll h-130d rounded-lg">
+      <div class="overflow-x-auto overflow-y-scroll h-125 rounded-lg">
         <table class="table table-zebra table-sm table-pin-rows">
         <!-- Table Head -->
         <thead class="table-pin-rows">

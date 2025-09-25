@@ -2,6 +2,15 @@
 import Search from '@/components/Search.vue';
 import Button from '@/components/Button.vue';
 import DatePicker from '@/components/DatePicker.vue';
+
+import { onMounted } from 'vue';
+import { useReportStore } from '@/stores/reports';
+
+const reports = useReportStore();
+
+onMounted(() => {
+  reports.fetchReturnedBooks();
+});
 </script>
 
 <template>
@@ -28,19 +37,18 @@ import DatePicker from '@/components/DatePicker.vue';
         </div>
       </div>
       <!-- Table Container -->
-      <div class="overflow-x-auto overflow-y-scroll h-130d rounded-lg">
+      <div class="overflow-x-auto overflow-y-scroll h-125 rounded-lg">
         <table class="table table-zebra table-sm table-pin-rows">
         <!-- Table Head -->
         <thead class="table-pin-rows">
-          <tr class="bg-base-200 text-center">
+          <tr class="bg-base-200">
             <th>Transaction No.</th>
-            <th>Book ID</th>
-            <th>Title</th>
+            <th>Reference No.</th>
             <th>Borrower</th>
             <th>Person In Charge</th>
             <th>Date Returned</th>
             <th>Due Date</th>
-            <th>Condition</th>
+            <th>Return Condition</th>
             <th>Penalty</th>
             <th>Action</th>
           </tr>
@@ -48,40 +56,38 @@ import DatePicker from '@/components/DatePicker.vue';
         <!-- Table Body -->
         <tbody>
           <!-- row 1 -->
-          <tr v-for="i in 20" :key="i" class="text-center">
-          <td>{{ Math.floor(10000000 + Math.random() * 90000000) }}</td>
+          <tr v-for="returned_book in reports.returned_books" :key="returned_book.id">
+          <td>{{ returned_book.id }}</td>
           <td>
-            {{ i * 10 ^ 100 / 5 }}
+            {{ returned_book.borrowed_book_id }}
           </td>
           <td>
-            <div class="font-bold">To Kill a Mocking Bird</div>
-            <div class="text-sm opacity-50">Novel by Harper Lee</div>
+            <div class="font-bold">{{ returned_book.borrower_name }}</div>
+            <div class="text-sm opacity-50">{{ returned_book.borrower_id }}</div>
           </td>
           <td>
-            <div class="font-bold">John Doe Borrower</div>
-            <div class="text-sm opacity-50">123123</div>
+            <div class="font-bold">{{ returned_book.librarian_name }}</div>
+            <div class="text-sm opacity-50">{{ returned_book.librarian_id }}</div>
           </td>
           <td>
-            <div class="font-bold">John Due</div>
-            <div class="text-sm opacity-50">Librarian ID</div>
-          </td>
-          <td>
-              {{ new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toLocaleDateString() }}
+              {{ returned_book.returned_at }}
             <!-- <br /> -->
           </td>
           <td>
-            {{
-              (() => {
-                const borrowed = new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000);
-                const due = new Date(borrowed.getTime() + 3 * 24 * 60 * 60 * 1000);
-                return due.toLocaleDateString();
-              })()
-            }}
+            {{ returned_book.due_at }}
           </td>
-          <td>
-            <span class="badge badge-success badge-soft badge-sm">{{ ['Good', 'Damaged', 'Lost'][Math.floor(Math.random() * 3)] }}</span>
+          <td class="text-center">
+            <span 
+              :class="[
+                'badge badge-soft badge-sm',
+                {
+                  'badge-success' : returned_book.returned_condition === 'Good',
+                  'badge-warning' : returned_book.returned_condition === 'Slightly Damaged',
+                  'badge-error' : returned_book.returned_condition === 'Severely Damaged' || returned_book.returned_condition === 'Lost'
+                }
+                ]">{{ returned_book.returned_condition }}</span>
           </td>
-          <td>Available</td>
+          <td class="text-center">{{ returned_book.penalty }}</td>
           <th>
             <div class="dropdown dropdown-end">
             <div role="button" class="btn btn-ghost btn-xs" tabindex="0">
