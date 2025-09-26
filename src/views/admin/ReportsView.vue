@@ -1,7 +1,76 @@
 <script setup>
 import Search from '@/components/Search.vue';
+import FilterButton from '@/components/FilterButton.vue';
 import Button from '@/components/Button.vue';
 import DatePicker from '@/components/DatePicker.vue';
+import { computed, onMounted, ref } from 'vue';
+import { useReportStore } from '@/stores/reports';
+
+const reports = useReportStore();
+const items = ref([]);
+onMounted(() => {
+  reports.fetchReports();
+  items.value = reports.reports;
+});
+
+// Determines if the record is returned late.
+const isReturnedLate = (report) => {
+  if (!report.returned_at) return false;
+  return new Date(report.returned_at) > new Date(report.due_at);
+};
+
+// Search Filter
+const searchInput = ref('');
+
+const filteredItems = computed(() => {
+  return items.value.filter(item => {
+    const matchesSearch = !searchInput.value || (
+      item.id.toString().toLowerCase().includes(searchInput.value.toLowerCase()) ||
+      item.title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+      item.author.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+      item.borrower_name.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+      item.borrower_id.toString().toLowerCase().includes(searchInput.value.toLowerCase()) ||
+      item.librarian_name.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+      item.librarian_id.toString().toLowerCase().includes(searchInput.value.toLowerCase())
+    );
+
+    const matchesCondition = !activeFilters.value.condition.length || 
+      activeFilters.value.condition.includes(item.returned_condition);
+
+    const matchesPenalty = !activeFilters.value.penalty.length || 
+      activeFilters.value.penalty.includes(item.penalty_fee_status);
+
+    return matchesSearch && matchesCondition && matchesPenalty;
+  });
+});
+
+const handleSearch = (search) => {
+  searchInput.value = search;
+};
+
+const activeFilters = ref({
+  condition: [],
+  penalty: []
+});
+
+const handleFilters = (filters) => {
+  // Handle different filter structures depending on what FilterButton emits
+  if (Array.isArray(filters)) {
+    // If FilterButton emits a simple array, you might want to categorize them
+    activeFilters.value.condition = filters.filter(f => 
+      ['Good', 'Slightly Damaged', 'Severely Damaged', 'Lost'].includes(f)
+    );
+    activeFilters.value.penalty = filters.filter(f => 
+      ['No Penalty', 'Paid', 'Unpaid'].includes(f)
+    );
+  } else if (typeof filters === 'object') {
+    // If FilterButton emits an object with categorized filters
+    activeFilters.value.condition = filters.condition || [];
+    activeFilters.value.penalty = filters.penalty || [];
+  }
+};
+
+
 </script>
 
 <template>
@@ -16,11 +85,8 @@ import DatePicker from '@/components/DatePicker.vue';
           <DatePicker />
         </div>
         <div class="justify-end flex gap-2">
-          <Search />
-          <Button>
-            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 20 20"><path fill="currentColor" d="m8.398 14.605l1.323 1.143c.29.251.323.691.075.984a.688.688 0 0 1-.976.075l-1.565-1.352a.7.7 0 0 1-.242-.53V7.938L1.171 1.155C.78.703 1.1 0 1.694 0h16.612c.594 0 .912.704.523 1.155l-5.85 6.784v11.363c0 .386-.31.698-.692.698a.695.695 0 0 1-.692-.698V7.678a.7.7 0 0 1 .17-.458l5.023-5.825H3.21L8.228 7.22a.7.7 0 0 1 .17.458v6.927Z"/></svg>
-            Filter
-          </Button>
+          <Search @search="handleSearch" />
+          <FilterButton @filter="handleFilters" />
           <Button>
             <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 512 512"><path fill="currentColor" d="M420 128.1V16H92v112.1A80.1 80.1 0 0 0 16 208v192h68v-32H48V208a48.054 48.054 0 0 1 48-48h320a48.054 48.054 0 0 1 48 48v160h-44v32h76V208a80.1 80.1 0 0 0-76-79.9Zm-32-.1H124V48h264Z"/><path fill="currentColor" d="M396 200h32v32h-32zm-280 64H76v32h40v200h272V296h40v-32H116Zm240 200H148V296h208Z"/></svg>
             Print
@@ -28,8 +94,8 @@ import DatePicker from '@/components/DatePicker.vue';
         </div>
       </div>
       <!-- Table Container -->
-      <div class="overflow-x-auto overflow-y-scroll h-130d rounded-lg">
-        <table class="table table-zebra table-sm table-pin-rows">
+      <div class="overflow-x-auto overflow-y-scroll h-125 rounded-lg">
+        <table class="table table-zebra table-xs table-pin-rows">
         <!-- Table Head -->
         <thead class="table-pin-rows">
           <tr class="bg-base-200 text-center">
@@ -48,41 +114,52 @@ import DatePicker from '@/components/DatePicker.vue';
         <!-- Table Body -->
         <tbody>
           <!-- row 1 -->
-          <tr v-for="i in 20" :key="i" class="text-center">
-          <td>{{ Math.floor(10000000 + Math.random() * 90000000) }}</td>
+          <tr v-for="report in filteredItems" :key="report.id" class="text-center">
           <td>
-            <div class="font-bold">To Kill a Mocking Bird</div>
-            <div class="text-sm opacity-50">Novel by Harper Lee</div>
+            <div>{{ report.id }}</div>
+            <div>{{ report.return_id }}</div>
           </td>
           <td>
-            <div class="font-bold">John Doe Borrower</div>
-            <div class="text-sm opacity-50">Borrower ID</div>
+            <div class="font-bold">{{ report.title }}</div>
+            <div class="text-sm opacity-50">{{ report.author }}</div>
           </td>
           <td>
-            <div class="font-bold">John Doe Librarian</div>
-            <div class="text-sm opacity-50">Librarian ID</div>
+            <div class="font-bold">{{ report.borrower_name }}</div>
+            <div class="text-sm opacity-50">{{ report.borrower_id }}</div>
           </td>
           <td>
-              {{ new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toLocaleDateString() }}
+            <div class="font-bold">{{ report.librarian_name }}</div>
+            <div class="text-sm opacity-50">{{ report.librarian_id }}</div>
+          </td>
+          <td>
+              {{ report.borrowed_at }}
             <!-- <br /> -->
           </td>
-          <td>
-              {{ new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000).toLocaleDateString() }}
+          <td :class="{ 'text-red-600' : isReturnedLate(report) }">
+              {{ report.returned_at }}
             <!-- <br /> -->
           </td>
-          <td>
-            {{
-              (() => {
-                const borrowed = new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000);
-                const due = new Date(borrowed.getTime() + 3 * 24 * 60 * 60 * 1000);
-                return due.toLocaleDateString();
-              })()
-            }}
+          <td :class="{ 'text-red-600' : isReturnedLate(report) }">
+            {{ report.due_at }}
           </td>
           <td>
-            <span :class="[ 'badge badge-soft badge-sm', state !== 'Good' ? 'badge-success' : state === 'Damaged' ? 'badge-warning' : 'badge-error' ]">{{ state =  ['Good', 'Damaged', 'Lost'][Math.floor(Math.random() * 3)] }}</span>
+            <span v-if="report.returned_condition"
+              :class="[ 
+                'badge badge-soft badge-sm',
+                {
+                  'badge-success' : report.returned_condition === 'Good',
+                  'badge-warning' : report.returned_condition === 'Slightly Damaged',
+                  'badge-error' : report.returned_condition === 'Severely Damaged' || report.returned_condition === 'Lost'
+                }
+                ]">{{ report.returned_condition }}</span>
           </td>
-          <td>Available</td>
+          <td 
+            :class="{ 
+              'text-red-600' : report.penalty_fee_status === 'Unpaid',
+              'text-green-600' : report.penalty_fee_status === 'Paid'
+              }">
+            {{ report.penalty }}
+          </td>
           <th>
             <div class="dropdown dropdown-end">
             <div role="button" class="btn btn-ghost btn-xs" tabindex="0">

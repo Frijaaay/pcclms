@@ -1,7 +1,15 @@
 <script setup>
 import { inject } from 'vue';
 
-const searchInput = inject('searchInput');
+// Injects the global function for keyboard shortcut to focus on search bar.
+const searchBarFocus = inject('searchBarFocus');
+
+// search input
+const emit = defineEmits(['search']);
+const search = (e) => {
+    emit('search', e.target.value);
+};
+
 </script>
 
 
@@ -19,7 +27,7 @@ const searchInput = inject('searchInput');
                 <path d="m21 21-4.3-4.3"></path>
             </g>
         </svg>
-        <input ref="searchInput" type="search" class="grow" placeholder="Search" />
+        <input @input="search" ref="searchBarFocus" type="search" class="grow" placeholder="Search" />
         <kbd class="kbd kbd-sm">⌘</kbd>
         <kbd class="kbd kbd-sm">K</kbd>
     </label>
