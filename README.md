@@ -11,7 +11,7 @@ This system streamlines the library operations of PCC by providing efficient mod
 - **🏫 Client**: Pasig Catholic College (PCC).
 - **🎓 Institution**: Rizal Technological University (RTU).
 - **📁 Type**: Capstone Project.
-- **💻 Tech Stack**: Vue.js + TailwindCSS + Laravel + MySQL.
+- **💻 Tech Stack**: Vue.js + TailwindCSS + [Laravel](https://github.com/Frijaaay/pcclms-api) + MySQL.
 
 ---
 
