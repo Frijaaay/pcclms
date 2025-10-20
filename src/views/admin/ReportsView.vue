@@ -8,6 +8,7 @@ import { useReportStore } from '@/stores/reports';
 
 const reports = useReportStore();
 const items = ref([]);
+
 onMounted(() => {
   reports.fetchReports();
   items.value = reports.reports;

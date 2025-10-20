@@ -1,6 +1,4 @@
 <script setup>
-import { useRouter } from 'vue-router';
-import { onMounted, reactive } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import Profile from '@/views/admin/ProfileModal.vue';
 
@@ -8,10 +6,9 @@ import Profile from '@/views/admin/ProfileModal.vue';
 const emit = defineEmits(['open-modal']);
 
 const auth = useAuthStore();
-const router = useRouter();
 
 const handleLogout = () => {
-  auth.logout(router);
+  auth.logout();
 }
 
 </script>

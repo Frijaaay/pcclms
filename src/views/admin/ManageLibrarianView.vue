@@ -99,6 +99,6 @@ const isModalOpen = ref(false);
 
     <AddLibrarianModal 
         :is-open="isModalOpen" 
-        @close-modal="isModalOpen = false"    
+        @close-modal="isModalOpen = false"
     />
 </template>

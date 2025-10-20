@@ -43,15 +43,19 @@ const handleCreate = async () => {
         <form @submit.prevent="handleCreate" class="modal-box fieldset bg-base-200 border-base-300 w-md border p-4">
             <legend class="fieldset-legend">Add Librarian</legend>
             <label class="label">Name</label>
-            <input v-model="createdUser.name" type="text" class="input" placeholder="Full Name" required/>
+            <input name="name" v-model="createdUser.name" type="text" class="input" placeholder="Full Name" required/>
+            
             <label class="label">ID Number</label>
-            <input v-model="createdUser.id_number" type="text" class="input" placeholder="20**-******" required/>
+            <input name="username" v-model="createdUser.id_number" type="text" class="input" placeholder="20**-******" required/>
+            
             <label class="label">Email</label>
             <input v-model="createdUser.email" type="email" class="input" placeholder="Email" required/>
+            
             <label class="label">Type</label>
             <select v-model="createdUser.type" class="select" required>
                 <option value="Employee">Employee</option>
             </select>
+            
             <label class="label">Department</label>
             <select v-model="createdUser.department" class="select" required>
                 <option value="Library">Library</option>
@@ -76,9 +80,9 @@ const handleCreate = async () => {
     <span>{{ user.error }}</span>
   </div>
 </div>
-<div v-if="user.success" class="toast transition">
+<div v-if="user.message" class="toast transition">
   <div class="alert alert-success">
-    <span>{{ user.success }}</span>
+    <span>{{ user.message }}</span>
   </div>
 </div>
 </template>

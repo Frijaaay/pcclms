@@ -30,7 +30,7 @@ const editableUser = reactive({
 
 onMounted(() => {
   if (auth.user) {
-    editableUser.user_type_id = auth.user.user_type_id;
+    editableUser.user_type_id = auth.user.user_type.id;
     editableUser.name = auth.user.name;
     editableUser.email = auth.user.email;
     editableUser.id_number = auth.user.id_number;
@@ -111,9 +111,7 @@ onClickOutside(closeMe, (event) => {
           <input v-if="!edit" v-model="editableUser.type" type="text" class="input input-md bg-base-200 w-full" readonly/>
           <select v-else v-model="editableUser.type" class="select bg-base-200 px-3 py-2 w-full" :readonly="!edit">
             <option value="Employee">Employee</option>
-            <option value="JHS">JHS</option>
-            <option value="SHS">SHS</option>
-            <option value="College">College</option>
+            <option value="Student">Student</option>
           </select>
         </div>
         <div class="space-y-2">
