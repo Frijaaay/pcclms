@@ -62,3 +62,4 @@ temp/
 # Example: If you use Cypress, you might add:
 # cypress/videos/
 # cypress/screenshots/
+.env

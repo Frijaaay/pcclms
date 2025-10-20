@@ -2,21 +2,27 @@ import './assets/main.css';
 import 'primeicons/primeicons.css';
 import 'cally';
 
-import { createApp } from 'vue';
+import { createApp, markRaw } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { createPinia } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import echo from '@/lib/echo';
 
 const app = createApp(App);
 const pinia = createPinia();
 
-(async () => {
-    app.use(pinia);
-    
-    const auth = useAuthStore();
-    await auth.hydrate(); // Hydrate the auth store with user and token from localStorage
+pinia.use(({ store }) => {
+    store.router = markRaw(router);
+});
 
-    app.use(router);
-    app.mount('#app');
-})();
+app.use(pinia);
+
+const { hydrate } = useAuthStore();
+await hydrate(); // Hydrate the auth store with user and token from localStorageauth
+
+app.use(router);
+
+app.config.globalProperties.$echo = echo;
+
+app.mount('#app');
